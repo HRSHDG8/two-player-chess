@@ -46,7 +46,7 @@ class Rook implements Piece {
                 coordinates.push({ x: right, y: y });
             } else {
                 //check kill here
-                const piece = board[right][x].piece
+                const piece = board[y][right].piece
                 if (piece !== null && piece.color !== this.color) {
                     coordinates.push({ x: right, y: y });
                 }

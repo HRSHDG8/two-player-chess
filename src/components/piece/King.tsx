@@ -32,14 +32,18 @@ class King implements Piece {
             }
         }
         const coordinates: Coordinate[] = [];
-        availableMoves.forEach((c: Coordinate, index: number) => {
-            invalidCoordinates.forEach((i: Coordinate) => {
-                if ((i.x !== c.x || i.y !== c.y)) {
-                    coordinates.push({ x: c.x, y: c.y });
+        availableMoves.forEach((valid: Coordinate, index: number) => {
+            invalidCoordinates.forEach((invalid: Coordinate) => {
+                if (!(invalid.x === valid.x && invalid.y === valid.y)) {
+                    coordinates.push({ x: valid.x, y: valid.y });
                 }
             })
         });
-        return coordinates;
+        return availableMoves
+            .map((c: Coordinate) => c.x + "" + c.y)
+            .filter(v => !invalidCoordinates
+                .map((c: Coordinate) => c.x + "" + c.y).includes(v))
+            .map(value => { return { x: parseInt(value[0]), y: parseInt(value[1]) } });
     }
     render(): JSX.Element {
         return (
