@@ -12,6 +12,10 @@ class Bishop implements Piece {
     constructor(color: Color) {
         this.color = color;
     }
+    attackingMoves(x: number, y: number, board: Square[][]): Coordinate[] {
+        const attacks: Coordinate[] = [];
+        return attacks;
+    }
     onClick(x: number, y: number, board: Square[][]): Coordinate[] {
         const coordinates: Coordinate[] = [];
         //move top-right

@@ -4,5 +4,6 @@ import { Square } from '../board/Board';
 export interface Piece {
     color: Color;
     onClick: (x: number, y: number, board: Square[][]) => Coordinate[];
-    render: Function
+    attackingMoves: (x: number, y: number, board: Square[][]) => Coordinate[];
+    render: Function;
 }
