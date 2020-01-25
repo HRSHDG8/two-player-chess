@@ -1,0 +1,23 @@
+.square {
+    width: 60px;
+    height: 60px;
+}
+
+.board {
+    border-collapse: collapse;
+    border: 5px solid #555;
+}
+
+.cell {
+    margin: 0;
+    padding: 0;
+}
+
+.highlight {
+    box-shadow: inset 0 0 0px 8px #4CAF50;
+    cursor: pointer;
+}
+
+.currentSelection {
+    box-shadow: inset 0 0 0px 8px red;
+}
