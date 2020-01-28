@@ -13,7 +13,7 @@ class Queen implements Piece {
         this.color = color;
     }
     attackingMoves(x: number, y: number, board: Square[][]): Coordinate[] {
-        const attacks: Coordinate[] = [];
+        const attacks: Coordinate[] = this.onClick(x, y, board);
         return attacks;
     }
     onClick(x: number, y: number, board: Square[][]): Coordinate[] {

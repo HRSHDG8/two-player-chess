@@ -14,9 +14,17 @@ class Pawn implements Piece {
     }
     attackingMoves(x: number, y: number, board: Square[][]): Coordinate[] {
         const attacks: Coordinate[] = [];
-        return attacks;
+        if (this.color === Color.white) {
+            attacks.push({ x: x + 1, y: y + 1 });
+            attacks.push({ x: x - 1, y: y + 1 });
+        } else {
+            attacks.push({ x: x + 1, y: y - 1 });
+            attacks.push({ x: x - 1, y: y - 1 });
+        }
+        return attacks.filter(({ x, y }) => x >= 0 && x <= 7 && y >= 0 && y <= 7);
     }
     onClick(x: number, y: number, board: Square[][]): Coordinate[] {
+        console.log("Pawn attacks on ", this.attackingMoves(x, y, board));
         const coordinates: Coordinate[] = [];
         if (this.color === Color.white) {
             if (y === 1) {

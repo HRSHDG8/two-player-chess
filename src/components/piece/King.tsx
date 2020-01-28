@@ -21,7 +21,7 @@ class King implements Piece {
         board.forEach((row: Square[], _y: number) => {
             row.forEach((cell: Square, _x: number) => {
                 if (cell.piece !== null && cell.piece.color !== this.color && !(cell.piece instanceof King)) {
-                    invalidCoordinates.push(...cell.piece.onClick(_x, _y, board));
+                    invalidCoordinates.push(...cell.piece.attackingMoves(_x, _y, board));
                 }
             })
         });
