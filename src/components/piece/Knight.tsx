@@ -13,8 +13,20 @@ class Knight implements Piece {
         this.color = color;
     }
     attackingMoves(x: number, y: number, board: Square[][]): Coordinate[] {
-        const attacks: Coordinate[] = this.onClick(x, y, board);
-        return attacks;
+        const coordinates: Coordinate[] = [];
+        //move top-right
+        coordinates.push({ x: x + 1, y: y - 2 });
+        coordinates.push({ x: x + 2, y: y - 1 });
+        //move top-left
+        coordinates.push({ x: x - 1, y: y - 2 });
+        coordinates.push({ x: x - 2, y: y - 1 });
+        //move bottom-right
+        coordinates.push({ x: x + 1, y: y + 2 });
+        coordinates.push({ x: x + 2, y: y + 1 });
+        //move bottom-left
+        coordinates.push({ x: x - 1, y: y + 2 });
+        coordinates.push({ x: x - 2, y: y + 1 });
+        return coordinates.filter(({ x, y }: Coordinate) => y >= 0 && y <= 7 && x >= 0 && x <= 7);
     }
     onClick(x: number, y: number, board: Square[][]): Coordinate[] {
         const coordinates: Coordinate[] = [];
