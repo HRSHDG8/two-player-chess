@@ -6,8 +6,6 @@ import Queen from '../piece/Queen';
 import King from '../piece/King';
 import Color from "../../util/Color";
 import { Piece } from '../piece/Piece';
-import dark from './Dark.module.css';
-import light from './Light.module.css';
 import { Coordinate } from '../../util/Selected';
 
 export const defaultCoordinate: Coordinate = { x: -1, y: -1 };
@@ -24,9 +22,6 @@ export function initBoard(): Square[][] {
     }
     setPieces(board);
     return board;
-}
-export function resolveTheme(color: Color): { readonly [key: string]: string } {
-    return color === Color.black ? dark : light;
 }
 export class Square {
     piece: Piece | null = null;

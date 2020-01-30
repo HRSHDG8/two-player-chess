@@ -4,7 +4,7 @@ import Color from '../../util/Color';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessKnight } from '@fortawesome/free-solid-svg-icons';
 import classNames from './Piece.module.css';
-import { resolveTheme } from './Theme.Resolver';
+import { resolveTheme } from '../../theme/Theme.Resolver';
 import { Coordinate } from '../../util/Selected';
 import { Square } from '../board/BoardUtils';
 class Knight implements Piece {

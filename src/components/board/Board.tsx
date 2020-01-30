@@ -4,7 +4,8 @@ import classNames from './Board.module.css';
 import { Piece } from '../piece/Piece';
 import King from '../piece/King';
 import { Coordinate } from '../../util/Selected';
-import { Square, resolveTheme, whiteDeadPiece, blackDeadPiece, initBoard, defaultCoordinate } from './BoardUtils';
+import { Square, whiteDeadPiece, blackDeadPiece, initBoard, defaultCoordinate } from './BoardUtils';
+import { resolveTheme } from '../../theme/Theme.Resolver';
 
 const Board: React.FC = () => {
     let [board, setBoard] = React.useState(initBoard());

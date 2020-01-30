@@ -4,7 +4,7 @@ import Color from '../../util/Color';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessPawn } from '@fortawesome/free-solid-svg-icons';
 import classNames from './Piece.module.css';
-import { resolveTheme } from './Theme.Resolver';
+import { resolveTheme } from '../../theme/Theme.Resolver';
 import { Coordinate } from '../../util/Selected';
 import { Square } from '../board/BoardUtils';
 class Pawn implements Piece {
