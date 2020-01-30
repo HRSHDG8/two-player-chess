@@ -6,7 +6,7 @@ import { faChessKnight } from '@fortawesome/free-solid-svg-icons';
 import classNames from './Piece.module.css';
 import { resolveTheme } from './Theme.Resolver';
 import { Coordinate } from '../../util/Selected';
-import { Square } from '../board/Board';
+import { Square } from '../board/BoardUtils';
 class Knight implements Piece {
     color: Color;
     constructor(color: Color) {
@@ -28,7 +28,7 @@ class Knight implements Piece {
         coordinates.push({ x: x - 2, y: y + 1 });
         return coordinates.filter(({ x, y }: Coordinate) => y >= 0 && y <= 7 && x >= 0 && x <= 7);
     }
-    onClick(x: number, y: number, board: Square[][]): Coordinate[] {
+    possibleMoves(x: number, y: number, board: Square[][]): Coordinate[] {
         const coordinates: Coordinate[] = [];
         //move top-right
         coordinates.push({ x: x + 1, y: y - 2 });

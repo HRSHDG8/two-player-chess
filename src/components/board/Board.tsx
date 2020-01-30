@@ -1,69 +1,19 @@
 import * as React from 'react';
 import Color from '../../util/Color';
-import dark from './Dark.module.css';
-import light from './Light.module.css';
 import classNames from './Board.module.css';
 import { Piece } from '../piece/Piece';
-import Pawn from '../piece/Pawn';
-import Rook from '../piece/Rook';
-import Knight from '../piece/Knight';
-import Bishop from '../piece/Bishop';
-import Queen from '../piece/Queen';
 import King from '../piece/King';
 import { Coordinate } from '../../util/Selected';
-export class Square {
-    piece: Piece | null = null;
-    color: Color;
-    highlight: boolean = false;
-    constructor(color: Color) {
-        this.color = color;
-    }
+import { Square, resolveTheme, whiteDeadPiece, blackDeadPiece, initBoard, defaultCoordinate } from './BoardUtils';
 
-}
-const whiteDeadPiece: Piece[] = [];
-const blackDeadPiece: Piece[] = [];
-const setPieces = (board: Square[][]) => {
-    board[1].forEach((sqaure: Square) => sqaure.piece = new Pawn(Color.white));
-    board[0][0].piece = new Rook(Color.white);
-    board[0][1].piece = new Knight(Color.white);
-    board[0][2].piece = new Bishop(Color.white);
-    board[0][3].piece = new Queen(Color.white);
-    board[0][4].piece = new King(Color.white);
-    board[0][5].piece = new Bishop(Color.white);
-    board[0][6].piece = new Knight(Color.white);
-    board[0][7].piece = new Rook(Color.white);
-    board[6].forEach((sqaure: Square) => sqaure.piece = new Pawn(Color.black));
-    board[7][0].piece = new Rook(Color.black);
-    board[7][1].piece = new Knight(Color.black);
-    board[7][2].piece = new Bishop(Color.black);
-    board[7][3].piece = new King(Color.black);
-    board[7][4].piece = new Queen(Color.black);
-    board[7][5].piece = new Bishop(Color.black);
-    board[7][6].piece = new Knight(Color.black);
-    board[7][7].piece = new Rook(Color.black);
-}
 const Board: React.FC = () => {
-    function initBoard(): Square[][] {
-        const board: Square[][] = [];
-        for (let y = 0; y < 8; y++) {
-            const row: Square[] = [];
-            for (let x = 0; x < 8; x++) {
-                row.push(new Square((x + y) % 2 === 0 ? Color.white : Color.black));
-            }
-            board.push(row);
-        }
-        setPieces(board);
-        return board;
-    }
     let [board, setBoard] = React.useState(initBoard());
     let [whiteKilled, setWhiteKilled] = React.useState(whiteDeadPiece);
     let [blackKilled, setBlackKilled] = React.useState(blackDeadPiece);
     let [turn, setTurn] = React.useState(Color.white);
-    let [selectedPiece, setSelectedPiece] = React.useState({ x: -1, y: -1 });
+    let [selectedPiece, setSelectedPiece] = React.useState(defaultCoordinate);
     let [gameOver, setGameOver] = React.useState(false);
-    function resolveTheme(color: Color): { readonly [key: string]: string } {
-        return color === Color.black ? dark : light;
-    }
+
     function showPossibleMoves(piece: Piece, x: number, y: number) {
         let kingPos: Coordinate = { x: -1, y: -1 };
         board.forEach((row: Square[], _y: number) => {
@@ -75,14 +25,14 @@ const Board: React.FC = () => {
             });
         });
         console.log("The king is at : ", kingPos);
-        const coordinates: Coordinate[] = piece.onClick(x, y, board);
+        const coordinates: Coordinate[] = piece.possibleMoves(x, y, board);
         coordinates.forEach((coordinate: Coordinate) => {
             board[coordinate.y][coordinate.x].highlight = true;
         });
         setBoard([...board]);
         setSelectedPiece({ ...{ x: x, y: y } });
     }
-    function killMove(square: Square, x: number, y: number) {
+    function killMove(x: number, y: number) {
         const deadPiece = board[y][x].piece;
         setGameOver(deadPiece instanceof King);
         if (turn === Color.white) {
@@ -108,7 +58,7 @@ const Board: React.FC = () => {
         });
         board[y][x].piece = board[selectedPiece.y][selectedPiece.x].piece;
         board[selectedPiece.y][selectedPiece.x].piece = null;
-        setSelectedPiece({ x: -1, y: -1 });
+        setSelectedPiece(defaultCoordinate);
         setBoard([...board]);
         setTurn(turn === Color.white ? Color.black : Color.white);
     }
@@ -119,7 +69,7 @@ const Board: React.FC = () => {
                     showPossibleMoves(square.piece, x, y);
                 } else {
                     if (selectedPiece.x !== -1 && square.highlight) {
-                        killMove(square, x, y);
+                        killMove(x, y);
                     }
                 }
             } else if (square.highlight) {

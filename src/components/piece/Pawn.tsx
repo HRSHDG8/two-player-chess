@@ -6,7 +6,7 @@ import { faChessPawn } from '@fortawesome/free-solid-svg-icons';
 import classNames from './Piece.module.css';
 import { resolveTheme } from './Theme.Resolver';
 import { Coordinate } from '../../util/Selected';
-import { Square } from '../board/Board';
+import { Square } from '../board/BoardUtils';
 class Pawn implements Piece {
     color: Color;
     constructor(color: Color) {
@@ -23,7 +23,7 @@ class Pawn implements Piece {
         }
         return attacks.filter(({ x, y }) => x >= 0 && x <= 7 && y >= 0 && y <= 7);
     }
-    onClick(x: number, y: number, board: Square[][]): Coordinate[] {
+    possibleMoves(x: number, y: number, board: Square[][]): Coordinate[] {
         const coordinates: Coordinate[] = [];
         if (this.color === Color.white) {
             if (y === 1) {
