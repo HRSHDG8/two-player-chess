@@ -77,7 +77,7 @@ const Board: React.FC = (): JSX.Element => {
     }
     const cellRenderer = (square: Square, x: number, y: number): JSX.Element => {
         return <td key={x} className={classNames.cell}>
-            <div className={classNames.square + " " + resolveTheme(square.color).squareColor + " " + (square.highlight ? classNames.highlight : '') + " " + (selectedPiece.x === x && selectedPiece.y === y ? classNames.currentSelection : "")} onClick={() => { handleSquareClick(square, x, y) }}>
+            <div className={classNames.square + " " + resolveTheme(square.color).squareColor + " " + (square.highlight ? classNames.highlight : '') + " " + (selectedPiece.x === x && selectedPiece.y === y ? classNames.currentSelection : "") + " " + (turn === Color.black ? "" : classNames.rotate)} onClick={() => { handleSquareClick(square, x, y) }}>
                 {square.piece ? square.piece.render() : null}
             </div>
         </td>
@@ -85,7 +85,7 @@ const Board: React.FC = (): JSX.Element => {
     return (
         <>
             <div style={{ width: '500px', display: "inline-block", verticalAlign: 'top' }}>
-                <table className={classNames.board}>
+                <table className={classNames.board + " " + (turn === Color.black ? "" : classNames.rotate)}>
                     <tbody>
                         {
                             board.map((row: Square[], y: number) => {
