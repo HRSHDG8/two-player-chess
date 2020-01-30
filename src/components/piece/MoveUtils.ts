@@ -4,7 +4,7 @@ import King from "./King";
 import Color from "../../util/Color";
 
 //return all possible moves even out of bound need to filter on boundary condition post that
-export function rookAttackMoves(x: number, y: number, board: Board, coordinates: Coordinate[]) {
+export const rookAttackMoves = (x: number, y: number, board: Board, coordinates: Coordinate[]): void => {
     //move up
     for (let up: number = y - 1; up >= 0; up--) {
         const piece = board[up][x].piece
@@ -63,7 +63,7 @@ export function rookAttackMoves(x: number, y: number, board: Board, coordinates:
         }
     }
 }
-export function rookPossibleMoves(x: number, y: number, board: Board, coordinates: Coordinate[], color: Color) {
+export const rookPossibleMoves = (x: number, y: number, board: Board, coordinates: Coordinate[], color: Color): void => {
     //move up
     for (let up: number = y - 1; up >= 0; up--) {
         if (board[up][x].piece === null) {
@@ -117,7 +117,7 @@ export function rookPossibleMoves(x: number, y: number, board: Board, coordinate
         }
     }
 }
-export function bishopAttackMoves(x: number, y: number, board: Board, coordinates: Coordinate[]) {
+export const bishopAttackMoves = (x: number, y: number, board: Board, coordinates: Coordinate[]): void => {
     //move top-right
     for (let up = y - 1, right = x + 1; up >= 0 && right <= 7; up--, right++) {
         const piece = board[up][right].piece
@@ -176,7 +176,7 @@ export function bishopAttackMoves(x: number, y: number, board: Board, coordinate
         }
     }
 }
-export function bishopPossibleMoves(x: number, y: number, board: Board, coordinates: Coordinate[], color: Color) {
+export const bishopPossibleMoves = (x: number, y: number, board: Board, coordinates: Coordinate[], color: Color): void => {
     //move top-right
     for (let up = y - 1, right = x + 1; up >= 0 && right <= 7; up--, right++) {
         if (board[up][right].piece === null) {

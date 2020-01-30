@@ -4,10 +4,10 @@ import classNames from './Board.module.css';
 import { Piece } from '../piece/Piece';
 import King from '../piece/King';
 import { Coordinate } from '../../util/Selected';
-import { Square, whiteDeadPiece, blackDeadPiece, initBoard, defaultCoordinate } from './BoardUtils';
+import { Square, whiteDeadPiece, blackDeadPiece, initBoard, defaultCoordinate, removeHighlight } from './BoardUtils';
 import { resolveTheme } from '../../theme/Theme.Resolver';
 
-const Board: React.FC = () => {
+const Board: React.FC = (): JSX.Element => {
     let [board, setBoard] = React.useState(initBoard());
     let [whiteKilled, setWhiteKilled] = React.useState(whiteDeadPiece);
     let [blackKilled, setBlackKilled] = React.useState(blackDeadPiece);
@@ -15,17 +15,8 @@ const Board: React.FC = () => {
     let [selectedPiece, setSelectedPiece] = React.useState(defaultCoordinate);
     let [gameOver, setGameOver] = React.useState(false);
 
-    function showPossibleMoves(piece: Piece, x: number, y: number) {
-        let kingPos: Coordinate = { x: -1, y: -1 };
-        board.forEach((row: Square[], _y: number) => {
-            row.forEach((cell: Square, _x: number) => {
-                cell.highlight = false;
-                if (cell.piece?.color === turn && cell.piece instanceof King) {
-                    kingPos = { x: _x, y: _y };
-                }
-            });
-        });
-        console.log("The king is at : ", kingPos);
+    const showPossibleMoves = (piece: Piece, x: number, y: number) => {
+        removeHighlight(board);
         const coordinates: Coordinate[] = piece.possibleMoves(x, y, board);
         coordinates.forEach((coordinate: Coordinate) => {
             board[coordinate.y][coordinate.x].highlight = true;
@@ -33,7 +24,7 @@ const Board: React.FC = () => {
         setBoard([...board]);
         setSelectedPiece({ ...{ x: x, y: y } });
     }
-    function killMove(x: number, y: number) {
+    const killMove = (x: number, y: number) => {
         const deadPiece = board[y][x].piece;
         setGameOver(deadPiece instanceof King);
         if (turn === Color.white) {
@@ -51,19 +42,15 @@ const Board: React.FC = () => {
         }
         movePiece(x, y);
     }
-    function movePiece(x: number, y: number) {
-        board.forEach((row: Square[], _y: number) => {
-            row.forEach((cell: Square, _x: number) => {
-                cell.highlight = false;
-            })
-        });
+    const movePiece = (x: number, y: number): void => {
+        removeHighlight(board);
         board[y][x].piece = board[selectedPiece.y][selectedPiece.x].piece;
         board[selectedPiece.y][selectedPiece.x].piece = null;
         setSelectedPiece(defaultCoordinate);
         setBoard([...board]);
         setTurn(turn === Color.white ? Color.black : Color.white);
     }
-    function handleSquareClick(square: Square, x: number, y: number) {
+    const handleSquareClick = (square: Square, x: number, y: number) => {
         if (!gameOver) {
             if (square.piece) {
                 if (square.piece.color === turn) {
@@ -78,6 +65,23 @@ const Board: React.FC = () => {
             }
         }
     }
+
+    const rowRenderer = (row: Square[], y: number): JSX.Element => {
+        return <tr key={y}>
+            {
+                row.map((square: Square, x: number) => {
+                    return cellRenderer(square, x, y);
+                })
+            }
+        </tr>
+    }
+    const cellRenderer = (square: Square, x: number, y: number): JSX.Element => {
+        return <td key={x} className={classNames.cell}>
+            <div className={classNames.square + " " + resolveTheme(square.color).squareColor + " " + (square.highlight ? classNames.highlight : '') + " " + (selectedPiece.x === x && selectedPiece.y === y ? classNames.currentSelection : "")} onClick={() => { handleSquareClick(square, x, y) }}>
+                {square.piece ? square.piece.render() : null}
+            </div>
+        </td>
+    }
     return (
         <>
             <div style={{ width: '500px', display: "inline-block", verticalAlign: 'top' }}>
@@ -85,19 +89,7 @@ const Board: React.FC = () => {
                     <tbody>
                         {
                             board.map((row: Square[], y: number) => {
-                                return (
-                                    <tr key={y}>
-                                        {
-                                            row.map((square: Square, x: number) => {
-                                                return <td key={x} className={classNames.cell}>
-                                                    <div className={classNames.square + " " + resolveTheme(square.color).squareColor + " " + (square.highlight ? classNames.highlight : '') + " " + (selectedPiece.x === x && selectedPiece.y === y ? classNames.currentSelection : "")} onClick={() => { handleSquareClick(square, x, y) }}>
-                                                        {square.piece ? square.piece.render() : null}
-                                                    </div>
-                                                </td>
-                                            })
-                                        }
-                                    </tr>
-                                )
+                                return rowRenderer(row, y);
                             })
                         }
                     </tbody>
@@ -141,6 +133,6 @@ const Board: React.FC = () => {
             </div>
         </>
     );
-}
 
+}
 export default Board;

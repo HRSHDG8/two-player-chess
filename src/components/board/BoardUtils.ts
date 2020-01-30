@@ -11,7 +11,7 @@ export type Board = Square[][];
 export const defaultCoordinate: Coordinate = { x: -1, y: -1 };
 export const whiteDeadPiece: Piece[] = [];
 export const blackDeadPiece: Piece[] = [];
-export function initBoard(): Board {
+export const initBoard = (): Board => {
     const board: Board = [];
     for (let y = 0; y < 8; y++) {
         const row: Square[] = [];
@@ -50,4 +50,11 @@ const setPieces = (board: Board): void => {
     board[7][5].piece = new Bishop(Color.black);
     board[7][6].piece = new Knight(Color.black);
     board[7][7].piece = new Rook(Color.black);
+}
+export const removeHighlight = (board: Board): void => {
+    board.forEach((row: Square[]) => {
+        row.forEach((cell: Square) => {
+            cell.highlight = false;
+        });
+    });
 }
