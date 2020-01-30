@@ -7,12 +7,12 @@ import King from '../piece/King';
 import Color from "../../util/Color";
 import { Piece } from '../piece/Piece';
 import { Coordinate } from '../../util/Selected';
-
+export type Board = Square[][];
 export const defaultCoordinate: Coordinate = { x: -1, y: -1 };
 export const whiteDeadPiece: Piece[] = [];
 export const blackDeadPiece: Piece[] = [];
-export function initBoard(): Square[][] {
-    const board: Square[][] = [];
+export function initBoard(): Board {
+    const board: Board = [];
     for (let y = 0; y < 8; y++) {
         const row: Square[] = [];
         for (let x = 0; x < 8; x++) {
@@ -31,7 +31,7 @@ export class Square {
         this.color = color;
     }
 }
-const setPieces = (board: Square[][]) => {
+const setPieces = (board: Board): void => {
     board[1].forEach((sqaure: Square) => sqaure.piece = new Pawn(Color.white));
     board[0][0].piece = new Rook(Color.white);
     board[0][1].piece = new Knight(Color.white);

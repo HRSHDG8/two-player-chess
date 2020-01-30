@@ -1,9 +1,9 @@
 import Color from "../../util/Color";
 import { Coordinate } from "../../util/Selected";
-import { Square } from '../board/BoardUtils';
+import { Board } from '../board/BoardUtils';
 export interface Piece {
     color: Color;
-    possibleMoves: (x: number, y: number, board: Square[][]) => Coordinate[];
-    attackingMoves: (x: number, y: number, board: Square[][]) => Coordinate[];
+    possibleMoves: (x: number, y: number, board: Board) => Coordinate[];
+    attackingMoves: (x: number, y: number, board: Board) => Coordinate[];
     render: Function;
 }

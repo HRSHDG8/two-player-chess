@@ -1,10 +1,10 @@
 import { Coordinate } from "../../util/Selected";
-import { Square } from "../board/BoardUtils";
+import { Board } from "../board/BoardUtils";
 import King from "./King";
 import Color from "../../util/Color";
 
 //return all possible moves even out of bound need to filter on boundary condition post that
-export function rookAttackMoves(x: number, y: number, board: Square[][], coordinates: Coordinate[]) {
+export function rookAttackMoves(x: number, y: number, board: Board, coordinates: Coordinate[]) {
     //move up
     for (let up: number = y - 1; up >= 0; up--) {
         const piece = board[up][x].piece
@@ -63,7 +63,7 @@ export function rookAttackMoves(x: number, y: number, board: Square[][], coordin
         }
     }
 }
-export function rookPossibleMoves(x: number, y: number, board: Square[][], coordinates: Coordinate[], color: Color) {
+export function rookPossibleMoves(x: number, y: number, board: Board, coordinates: Coordinate[], color: Color) {
     //move up
     for (let up: number = y - 1; up >= 0; up--) {
         if (board[up][x].piece === null) {
@@ -117,7 +117,7 @@ export function rookPossibleMoves(x: number, y: number, board: Square[][], coord
         }
     }
 }
-export function bishopAttackMoves(x: number, y: number, board: Square[][], coordinates: Coordinate[]) {
+export function bishopAttackMoves(x: number, y: number, board: Board, coordinates: Coordinate[]) {
     //move top-right
     for (let up = y - 1, right = x + 1; up >= 0 && right <= 7; up--, right++) {
         const piece = board[up][right].piece
@@ -176,7 +176,7 @@ export function bishopAttackMoves(x: number, y: number, board: Square[][], coord
         }
     }
 }
-export function bishopPossibleMoves(x: number, y: number, board: Square[][], coordinates: Coordinate[], color: Color) {
+export function bishopPossibleMoves(x: number, y: number, board: Board, coordinates: Coordinate[], color: Color) {
     //move top-right
     for (let up = y - 1, right = x + 1; up >= 0 && right <= 7; up--, right++) {
         if (board[up][right].piece === null) {

@@ -6,13 +6,13 @@ import { faChessPawn } from '@fortawesome/free-solid-svg-icons';
 import classNames from './Piece.module.css';
 import { resolveTheme } from '../../theme/Theme.Resolver';
 import { Coordinate } from '../../util/Selected';
-import { Square } from '../board/BoardUtils';
+import { Board } from '../board/BoardUtils';
 class Pawn implements Piece {
     color: Color;
     constructor(color: Color) {
         this.color = color;
     }
-    attackingMoves(x: number, y: number, board: Square[][]): Coordinate[] {
+    attackingMoves(x: number, y: number, board: Board): Coordinate[] {
         const attacks: Coordinate[] = [];
         if (this.color === Color.white) {
             attacks.push({ x: x + 1, y: y + 1 });
@@ -23,7 +23,7 @@ class Pawn implements Piece {
         }
         return attacks.filter(({ x, y }) => x >= 0 && x <= 7 && y >= 0 && y <= 7);
     }
-    possibleMoves(x: number, y: number, board: Square[][]): Coordinate[] {
+    possibleMoves(x: number, y: number, board: Board): Coordinate[] {
         const coordinates: Coordinate[] = [];
         if (this.color === Color.white) {
             if (y === 1) {

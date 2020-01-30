@@ -6,17 +6,17 @@ import { faChessKing } from '@fortawesome/free-solid-svg-icons';
 import classNames from './Piece.module.css';
 import { resolveTheme } from '../../theme/Theme.Resolver';
 import { Coordinate } from '../../util/Selected';
-import { Square } from '../board/BoardUtils';
+import { Board, Square } from '../board/BoardUtils';
 class King implements Piece {
     color: Color;
     constructor(color: Color) {
         this.color = color;
     }
-    attackingMoves(x: number, y: number, board: Square[][]): Coordinate[] {
+    attackingMoves(x: number, y: number, board: Board): Coordinate[] {
         const attacks: Coordinate[] = [];
         return attacks;
     }
-    possibleMoves(x: number, y: number, board: Square[][]): Coordinate[] {
+    possibleMoves(x: number, y: number, board: Board): Coordinate[] {
         const invalidCoordinates: Coordinate[] = [];
         board.forEach((row: Square[], _y: number) => {
             row.forEach((cell: Square, _x: number) => {
