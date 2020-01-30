@@ -24,7 +24,6 @@ class Pawn implements Piece {
         return attacks.filter(({ x, y }) => x >= 0 && x <= 7 && y >= 0 && y <= 7);
     }
     onClick(x: number, y: number, board: Square[][]): Coordinate[] {
-        console.log("Pawn attacks on ", this.attackingMoves(x, y, board));
         const coordinates: Coordinate[] = [];
         if (this.color === Color.white) {
             if (y === 1) {

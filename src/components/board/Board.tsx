@@ -64,67 +64,68 @@ const Board: React.FC = () => {
     function resolveTheme(color: Color): { readonly [key: string]: string } {
         return color === Color.black ? dark : light;
     }
+    function showPossibleMoves(piece: Piece, x: number, y: number) {
+        let kingPos: Coordinate = { x: -1, y: -1 };
+        board.forEach((row: Square[], _y: number) => {
+            row.forEach((cell: Square, _x: number) => {
+                cell.highlight = false;
+                if (cell.piece?.color === turn && cell.piece instanceof King) {
+                    kingPos = { x: _x, y: _y };
+                }
+            });
+        });
+        console.log("The king is at : ", kingPos);
+        const coordinates: Coordinate[] = piece.onClick(x, y, board);
+        coordinates.forEach((coordinate: Coordinate) => {
+            board[coordinate.y][coordinate.x].highlight = true;
+        });
+        setBoard([...board]);
+        setSelectedPiece({ ...{ x: x, y: y } });
+    }
+    function killMove(square: Square, x: number, y: number) {
+        const deadPiece = board[y][x].piece;
+        setGameOver(deadPiece instanceof King);
+        if (turn === Color.white) {
+            const blackDead = blackKilled;
+            if (deadPiece !== null) {
+                blackDead.push(deadPiece);
+            }
+            setBlackKilled([...blackDead]);
+        } else {
+            const whiteDead = whiteKilled;
+            if (deadPiece !== null) {
+                whiteDead.push(deadPiece);
+            }
+            setWhiteKilled([...whiteDead]);
+        }
+        movePiece(x, y);
+    }
+    function movePiece(x: number, y: number) {
+        board.forEach((row: Square[], _y: number) => {
+            row.forEach((cell: Square, _x: number) => {
+                cell.highlight = false;
+            })
+        });
+        board[y][x].piece = board[selectedPiece.y][selectedPiece.x].piece;
+        board[selectedPiece.y][selectedPiece.x].piece = null;
+        setSelectedPiece({ x: -1, y: -1 });
+        setBoard([...board]);
+        setTurn(turn === Color.white ? Color.black : Color.white);
+    }
     function handleSquareClick(square: Square, x: number, y: number) {
-        if (!gameOver)
+        if (!gameOver) {
             if (square.piece) {
                 if (square.piece.color === turn) {
-                    let kingPos: Coordinate = { x: -1, y: -1 };
-                    board.forEach((row: Square[], _y: number) => {
-                        row.forEach((cell: Square, _x: number) => {
-                            cell.highlight = false;
-                            if (cell.piece?.color === turn && cell.piece instanceof King) {
-                                kingPos = { x: _x, y: _y };
-                            }
-                        })
-                    });
-                    const coordinates: Coordinate[] = square.piece.onClick(x, y, board);
-                    coordinates.forEach((coordinate: Coordinate) => {
-                        board[coordinate.y][coordinate.x].highlight = true;
-                    });
-                    setBoard([...board]);
-                    setSelectedPiece({ ...{ x: x, y: y } });
+                    showPossibleMoves(square.piece, x, y);
                 } else {
                     if (selectedPiece.x !== -1 && square.highlight) {
-                        board.forEach((row: Square[], _y: number) => {
-                            row.forEach((cell: Square, _x: number) => {
-                                cell.highlight = false;
-                            })
-                        });
-                        const deadPiece = board[y][x].piece;
-                        setGameOver(deadPiece instanceof King);
-                        if (turn === Color.white) {
-                            const blackDead = blackKilled;
-                            if (deadPiece !== null) {
-                                blackDead.push(deadPiece);
-                            }
-                            setBlackKilled([...blackDead]);
-                        } else {
-                            const whiteDead = whiteKilled;
-                            if (deadPiece !== null) {
-                                whiteDead.push(deadPiece);
-                            }
-                            setWhiteKilled([...whiteDead]);
-                        }
-                        board[y][x].piece = board[selectedPiece.y][selectedPiece.x].piece;
-                        board[selectedPiece.y][selectedPiece.x].piece = null;
-                        setSelectedPiece({ x: -1, y: -1 });
-                        setBoard([...board]);
-
-                        setTurn(turn === Color.white ? Color.black : Color.white);
+                        killMove(square, x, y);
                     }
                 }
             } else if (square.highlight) {
-                board.forEach((row: Square[], _y: number) => {
-                    row.forEach((cell: Square, _x: number) => {
-                        cell.highlight = false;
-                    })
-                });
-                board[y][x].piece = board[selectedPiece.y][selectedPiece.x].piece;
-                board[selectedPiece.y][selectedPiece.x].piece = null;
-                setSelectedPiece({ x: -1, y: -1 });
-                setBoard([...board]);
-                setTurn(turn === Color.white ? Color.black : Color.white);
+                movePiece(x, y);
             }
+        }
     }
     return (
         <>
